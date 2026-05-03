@@ -1,0 +1,3 @@
+<suppressions>
+    <suppress files=".*[/\\]roz[/\\]tan[/\\]retail[/\\]models[/\\].*\.java" checks=".*"/>
+</suppressions>
