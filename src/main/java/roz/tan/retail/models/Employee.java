@@ -29,7 +29,7 @@ public class Employee {
             strategy = GenerationType.IDENTITY
     )
     @Column(name = "employee_id")
-    private Integer employeeId;
+    private int employeeId;
 
     @Column(
             name = "first_name",

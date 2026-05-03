@@ -29,7 +29,7 @@ public class Product {
             strategy = GenerationType.IDENTITY
     )
     @Column(name = "product_id")
-    private Integer productId;
+    private int productId;
 
     @Column(
             name = "sku",

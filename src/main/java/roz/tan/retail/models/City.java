@@ -38,7 +38,7 @@ public class City {
             strategy = GenerationType.IDENTITY
     )
     @Column(name = "city_id")
-    private Integer cityId;
+    private int cityId;
 
     @Column(
             name = "name",

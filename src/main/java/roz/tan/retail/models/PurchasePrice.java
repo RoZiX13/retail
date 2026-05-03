@@ -40,7 +40,7 @@ public class PurchasePrice {
             strategy = GenerationType.IDENTITY
     )
     @Column(name = "purchase_price_id")
-    private Integer purchasePriceId;
+    private int purchasePriceId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(

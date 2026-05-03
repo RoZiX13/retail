@@ -32,7 +32,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
-    private Integer categoryId;
+    private int categoryId;
 
     @Column(
             name = "name",
@@ -48,7 +48,7 @@ public class Category {
             name = "is_active",
             columnDefinition = "BOOLEAN DEFAULT TRUE"
     )
-    private Boolean isActive;
+    private boolean isActive;
 
     @Column(
             name = "created_at",

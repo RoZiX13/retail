@@ -29,7 +29,7 @@ public class Supplier {
             strategy = GenerationType.IDENTITY
     )
     @Column(name = "supplier_id")
-    private Integer supplierId;
+    private int supplierId;
 
     @Column(
             name = "name",

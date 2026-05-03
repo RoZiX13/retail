@@ -29,7 +29,7 @@ public class Warehouse {
             strategy = GenerationType.IDENTITY
     )
     @Column(name = "warehouse_id")
-    private Integer warehouseId;
+    private int warehouseId;
 
     @Column(
             name = "name",
@@ -52,7 +52,7 @@ public class Warehouse {
             name = "is_active",
             columnDefinition = "BOOLEAN DEFAULT TRUE"
     )
-    private Boolean isActive;
+    private boolean isActive;
 
     @Column(
             name = "created_at",

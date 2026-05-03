@@ -32,7 +32,7 @@ public class Sale {
             strategy = GenerationType.IDENTITY
     )
     @Column(name = "sale_id")
-    private Integer saleId;
+    private int saleId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")

@@ -29,7 +29,7 @@ public class Brand {
             strategy = GenerationType.IDENTITY
     )
     @Column(name = "brand_id")
-    private Integer brandId;
+    private int brandId;
 
     @Column(
             name = "name",
@@ -47,7 +47,7 @@ public class Brand {
             name = "is_active",
             columnDefinition = "BOOLEAN DEFAULT TRUE"
     )
-    private Boolean isActive;
+    private boolean isActive;
 
     @Column(
             name = "created_at",

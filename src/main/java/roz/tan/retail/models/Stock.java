@@ -35,7 +35,7 @@ public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "stock_id")
-    private Integer stockId;
+    private int stockId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(

@@ -31,7 +31,7 @@ public class SaleItem {
             strategy = GenerationType.IDENTITY
     )
     @Column(name = "sale_item_id")
-    private Long saleItemId;
+    private long saleItemId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(

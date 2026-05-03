@@ -33,7 +33,7 @@ public class InventoryTransaction {
             strategy = GenerationType.IDENTITY
     )
     @Column(name = "tx_id")
-    private Long txId;
+    private long txId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
