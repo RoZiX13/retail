@@ -1,7 +1,19 @@
 package roz.tan.retail.models;
 
-import lombok.*;
-import jakarta.persistence.*;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.FetchType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -13,21 +25,38 @@ import java.time.LocalDateTime;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
     @Column(name = "product_id")
     private Integer productId;
 
-    @Column(name = "sku", length = 64, nullable = false, unique = true)
+    @Column(
+            name = "sku",
+            length = 64,
+            nullable = false,
+            unique = true
+    )
     private String sku;
 
-    @Column(name = "name", length = 256, nullable = false)
+    @Column(
+            name = "name",
+            length = 256,
+            nullable = false
+    )
     private String name;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(
+            name = "description",
+            columnDefinition = "TEXT"
+    )
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "unit_id", nullable = false)
+    @JoinColumn(
+            name = "unit_id",
+            nullable = false
+    )
     private Unit unit;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -42,9 +71,15 @@ public class Product {
     @JoinColumn(name = "origin_country_id")
     private Country originCountry;
 
-    @Column(name = "is_active", columnDefinition = "BOOLEAN DEFAULT TRUE")
-    private Boolean isActive;
+    @Column(
+            name = "is_active",
+            columnDefinition = "BOOLEAN DEFAULT TRUE"
+    )
+    private boolean isActive;
 
-    @Column(name = "created_at", columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP")
+    @Column(
+            name = "created_at",
+            columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
+    )
     private LocalDateTime createdAt;
 }

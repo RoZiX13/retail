@@ -1,7 +1,16 @@
 package roz.tan.retail.models;
 
-import lombok.*;
-import jakarta.persistence.*;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -13,13 +22,23 @@ import java.time.LocalDateTime;
 public class Position {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
     @Column(name = "position_id")
-    private Integer positionId;
+    private int positionId;
 
-    @Column(name = "name", length = 128, nullable = false, unique = true)
+    @Column(
+            name = "name",
+            length = 128,
+            nullable = false,
+            unique = true
+    )
     private String name;
 
-    @Column(name = "created_at", columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP")
+    @Column(
+            name = "created_at",
+            columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
+    )
     private LocalDateTime createdAt;
 }

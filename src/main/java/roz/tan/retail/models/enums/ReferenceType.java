@@ -1,4 +1,4 @@
-package roz.tan.retail.models;
+package roz.tan.retail.models.enums;
 
 public enum ReferenceType {
     PURCHASE,

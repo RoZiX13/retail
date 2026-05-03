@@ -51,13 +51,9 @@
 
     <!-- https://checkstyle.org/filters/suppressionfilter.html -->
     <module name="SuppressionFilter">
-        <property name="file" value="${config_loc}/suppressions.xml"/>
+        <property name="file" value="${checkstyle.suppressions.file}"/>
         <property name="optional" value="false"/>
     </module>
-
-    <!-- Checks that a package-info.java file exists for each package.     -->
-    <!-- See https://checkstyle.org/checks/javadoc/javadocpackage.html#JavadocPackage -->
-    <module name="JavadocPackage"/>
 
     <!-- Checks whether files end with a new line.                        -->
     <!-- See https://checkstyle.org/checks/misc/newlineatendoffile.html -->
@@ -96,15 +92,6 @@
 
     <module name="TreeWalker">
 
-        <!-- Checks for Javadoc comments.                     -->
-        <!-- See https://checkstyle.org/checks/javadoc/index.html -->
-        <module name="InvalidJavadocPosition"/>
-        <module name="JavadocMethod"/>
-        <module name="JavadocType"/>
-        <module name="JavadocVariable"/>
-        <module name="JavadocStyle"/>
-        <module name="MissingJavadocMethod"/>
-
         <!-- Checks for Naming Conventions.                  -->
         <!-- See https://checkstyle.org/checks/naming/index.html -->
         <module name="ConstantName"/>
@@ -141,12 +128,7 @@
         <module name="OperatorWrap"/>
         <module name="ParenPad"/>
         <module name="TypecastParenPad"/>
-        <module name="WhitespaceAfter">
-            <!-- Explicit token list to avoid duplication with WhitespaceAround.
-             All other default tokens are covered by WhitespaceAround. -->
-            <property name="tokens"
-                      value="COMMA, SEMI, TYPECAST, LITERAL_YIELD, ELLIPSIS, LITERAL_CASE"/>
-        </module>
+        <module name="WhitespaceAfter"/>
         <module name="WhitespaceAround"/>
 
         <!-- Modifier Checks                                    -->

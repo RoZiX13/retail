@@ -132,10 +132,21 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.6.0</version>
+				<dependencies>
+					<!-- Source: https://mvnrepository.com/artifact/com.puppycrawl.tools/checkstyle -->
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>9.3</version>
+						<scope>compile</scope>
+					</dependency>
+				</dependencies>
 				<configuration>
 					<configLocation>sun_check.xml</configLocation>
 					<suppressionsLocation>suppressions.xml</suppressionsLocation>
-					<suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
+					<encoding>UTF-8</encoding>
+					<consoleOutput>true</consoleOutput>
+					<failsOnError>true</failsOnError>
 				</configuration>
 				<executions>
 					<execution>
