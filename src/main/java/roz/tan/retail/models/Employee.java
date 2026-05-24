@@ -15,6 +15,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -91,4 +92,16 @@ public class Employee {
             columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
     )
     private LocalDateTime createdAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return employeeId == employee.employeeId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(employeeId);
+    }
 }

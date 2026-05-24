@@ -19,6 +19,7 @@ import roz.tan.retail.models.enums.ChangeType;
 import roz.tan.retail.models.enums.ReferenceType;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -59,8 +60,6 @@ public class InventoryTransaction {
 
     @Column(
             name = "quantity_change",
-            precision = 12,
-            scale = 3,
             nullable = false
     )
     private double quantityChange;
@@ -80,4 +79,16 @@ public class InventoryTransaction {
             columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
     )
     private LocalDateTime createdAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        InventoryTransaction that = (InventoryTransaction) o;
+        return txId == that.txId && Double.compare(quantityChange, that.quantityChange) == 0 && referenceId == that.referenceId && Objects.equals(createdAt, that.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(txId, quantityChange, referenceId, createdAt);
+    }
 }

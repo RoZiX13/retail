@@ -16,6 +16,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -53,8 +54,6 @@ public class Stock {
 
     @Column(
             name = "quantity",
-            precision = 12,
-            scale = 3,
             nullable = false,
             columnDefinition = "DECIMAL(12,3) DEFAULT 0"
     )
@@ -62,8 +61,6 @@ public class Stock {
 
     @Column(
             name = "reserved_quantity",
-            precision = 12,
-            scale = 3,
             nullable = false,
             columnDefinition = "DECIMAL(12,3) DEFAULT 0"
     )
@@ -80,4 +77,16 @@ public class Stock {
             columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
     )
     private LocalDateTime createdAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Stock stock = (Stock) o;
+        return stockId == stock.stockId && Double.compare(quantity, stock.quantity) == 0 && Double.compare(reservedQuantity, stock.reservedQuantity) == 0 && Objects.equals(lastUpdated, stock.lastUpdated) && Objects.equals(createdAt, stock.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(stockId, quantity, reservedQuantity, lastUpdated, createdAt);
+    }
 }

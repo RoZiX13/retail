@@ -15,6 +15,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -59,4 +60,16 @@ public class Warehouse {
             columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
     )
     private LocalDateTime createdAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Warehouse warehouse = (Warehouse) o;
+        return warehouseId == warehouse.warehouseId && isActive == warehouse.isActive && Objects.equals(name, warehouse.name) && Objects.equals(address, warehouse.address) && Objects.equals(createdAt, warehouse.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(warehouseId, name, address, isActive, createdAt);
+    }
 }

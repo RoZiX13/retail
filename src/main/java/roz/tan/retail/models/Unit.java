@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -44,9 +45,15 @@ public class Unit {
     )
     private String shortName;
 
-    @Column(
-            name = "created_at",
-            columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
-    )
-    private LocalDateTime createdAt;
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Unit unit = (Unit) o;
+        return unitId == unit.unitId && Objects.equals(fullName, unit.fullName) && Objects.equals(shortName, unit.shortName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(unitId, fullName, shortName);
+    }
 }

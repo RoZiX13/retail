@@ -1,21 +1,15 @@
 package roz.tan.retail.models;
 
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.UniqueConstraint;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.Set;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -50,9 +44,18 @@ public class Category {
     )
     private boolean isActive;
 
-    @Column(
-            name = "created_at",
-            columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
-    )
-    private LocalDateTime createdAt;
+    @OneToMany(mappedBy = "category")
+    private Set<Product> products;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return categoryId == category.categoryId && isActive == category.isActive && Objects.equals(name, category.name) && Objects.equals(parent, category.parent);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(categoryId, name, parent, isActive);
+    }
 }

@@ -1,17 +1,14 @@
 package roz.tan.retail.models;
 
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.Set;
 
 @Data
 @Builder
@@ -37,9 +34,18 @@ public class Country {
     @Column(name = "code", length = 3, unique = true)
     private String code;
 
-    @Column(
-            name = "created_at",
-            columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
-    )
-    private LocalDateTime createdAt;
+    @OneToMany(mappedBy = "country")
+    private Set<City> cities;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Country country = (Country) o;
+        return countryId == country.countryId && Objects.equals(name, country.name) && Objects.equals(code, country.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(countryId, name, code);
+    }
 }

@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 import roz.tan.retail.models.enums.SaleStatus;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -70,4 +71,16 @@ public class Sale {
             columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
     )
     private LocalDateTime createdAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Sale sale = (Sale) o;
+        return saleId == sale.saleId && Objects.equals(saleDatetime, sale.saleDatetime) && Objects.equals(createdAt, sale.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(saleId, saleDatetime, createdAt);
+    }
 }

@@ -16,6 +16,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -58,8 +59,6 @@ public class PurchasePrice {
 
     @Column(
             name = "price_value",
-            precision = 12,
-            scale = 2,
             nullable = false
     )
     private double priceValue;
@@ -82,4 +81,16 @@ public class PurchasePrice {
             columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
     )
     private LocalDateTime createdAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        PurchasePrice that = (PurchasePrice) o;
+        return purchasePriceId == that.purchasePriceId && Double.compare(priceValue, that.priceValue) == 0 && Objects.equals(validFrom, that.validFrom) && Objects.equals(validTo, that.validTo) && Objects.equals(createdAt, that.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(purchasePriceId, priceValue, validFrom, validTo, createdAt);
+    }
 }

@@ -15,6 +15,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -49,9 +50,15 @@ public class Brand {
     )
     private boolean isActive;
 
-    @Column(
-            name = "created_at",
-            columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
-    )
-    private LocalDateTime createdAt;
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Brand brand = (Brand) o;
+        return brandId == brand.brandId && isActive == brand.isActive && Objects.equals(name, brand.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(brandId, name, isActive);
+    }
 }

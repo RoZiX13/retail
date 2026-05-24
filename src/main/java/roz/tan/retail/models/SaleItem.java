@@ -17,6 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -49,24 +50,18 @@ public class SaleItem {
 
     @Column(
             name = "quantity",
-            precision = 12,
-            scale = 3,
             nullable = false
     )
     private double quantity;
 
     @Column(
             name = "unit_price",
-            precision = 12,
-            scale = 2,
             nullable = false
     )
     private double unitPrice;
 
     @Column(
             name = "discount_amount",
-            precision = 12,
-            scale = 2,
             columnDefinition = "DECIMAL(12,2) DEFAULT 0"
     )
     private double discountAmount;
@@ -82,5 +77,17 @@ public class SaleItem {
             columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
     )
     private LocalDateTime createdAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        SaleItem saleItem = (SaleItem) o;
+        return saleItemId == saleItem.saleItemId && Double.compare(quantity, saleItem.quantity) == 0 && Double.compare(unitPrice, saleItem.unitPrice) == 0 && Double.compare(discountAmount, saleItem.discountAmount) == 0 && Double.compare(finalPrice, saleItem.finalPrice) == 0 && Objects.equals(createdAt, saleItem.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(saleItemId, quantity, unitPrice, discountAmount, finalPrice, createdAt);
+    }
 }
 
