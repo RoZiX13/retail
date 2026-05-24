@@ -1,0 +1,229 @@
+type Country {
+    countryId: ID!
+    name: String!
+    code: String
+}
+
+type City {
+    cityId: ID!
+    name: String!
+}
+
+type Category {
+    categoryId: ID!
+    name: String!
+    parent: Category
+    isActive: Boolean
+}
+
+type Unit {
+    unitId: ID!
+    fullName: String!
+    shortName: String!
+}
+
+type Brand {
+    brandId: ID!
+    name: String!
+    country: Country
+    isActive: Boolean
+}
+
+type Product {
+    productId: ID!
+    sku: String!
+    name: String!
+    description: String
+    unit: Unit!
+    category: Category
+    brand: Brand
+    originCountry: Country
+    isActive: Boolean
+    createdAt: String
+    currentStock(warehouseId: ID): Stock
+    salePrices(shopId: ID): [SalePrice!]
+}
+
+type Stock {
+    stockId: ID!
+    product: Product!
+    warehouse: Warehouse!
+    quantity: Float!
+    reservedQuantity: Float!
+    lastUpdated: String
+}
+
+type Warehouse {
+    warehouseId: ID!
+    name: String!
+    address: String
+    city: City
+    isActive: Boolean
+    employees: [Employee!]
+    stocks: [Stock!]
+}
+
+type Shop {
+    shopId: ID!
+    name: String!
+    address: String
+    city: City
+    isActive: Boolean
+    employees: [Employee!]
+    sales: [Sale!]
+}
+
+type Supplier {
+    supplierId: ID!
+    name: String!
+    inn: String
+    kpp: String
+    contactPerson: String
+    phone: String
+    email: String
+    city: City
+    address: String
+    isActive: Boolean
+}
+
+type Customer {
+    customerId: ID!
+    firstName: String!
+    patronymic: String
+    lastName: String!
+    phone: String
+    email: String
+    city: City
+    address: String
+    isActive: Boolean
+    sales: [Sale!]
+}
+
+type Sale {
+    saleId: ID!
+    customer: Customer
+    shop: Shop!
+    employee: Employee
+    saleDatetime: String!
+    status: String!
+    items: [SaleItem!]
+}
+
+type SaleItem {
+    saleItemId: ID!
+    product: Product!
+    quantity: Float!
+    unitPrice: Float!
+    discountAmount: Float!
+    finalPrice: Float!
+}
+
+type SalePrice {
+    salePriceId: ID!
+    product: Product!
+    shop: Shop!
+    priceValue: Float!
+    discountAmount: Float!
+    validFrom: String!
+    validTo: String
+}
+
+type Employee {
+    employeeId: ID!
+    firstName: String!
+    patronymic: String
+    lastName: String!
+    position: Position
+    phone: String
+    email: String
+    manager: Employee
+    shop: Shop
+    warehouse: Warehouse
+    isActive: Boolean
+}
+
+type Position {
+    positionId: ID!
+    name: String!
+    employees: [Employee!]
+}
+
+# Queries
+type Query {
+    # Справочники
+    countries(ids: [ID!]!): [Country!]!
+    cities(ids: [ID!]!): [City!]!
+    categories(ids: [ID!]!): [Category!]!
+    units(ids: [ID!]!): [Unit!]!
+    brands(ids: [ID!]!): [Brand!]!
+    products_by_filter(
+        sku: String,
+        categoryId: ID,
+        brandId: ID,
+        isActive: Boolean
+    ): [Product!]
+    product(id: ID!): Product
+
+    # Склад
+    stocks(warehouseId: ID, productId: ID): [Stock!]
+    warehouses: [Warehouse!]
+
+    # Продажи
+    sales(shopId: ID, customerId: ID, status: String): [Sale!]
+    sale(id: ID!): Sale
+
+    # Персонал
+    employees(shopId: ID, warehouseId: ID): [Employee!]
+    positions: [Position!]
+
+    # Поставщики / Клиенты
+    suppliers(isActive: Boolean): [Supplier!]
+    customers(isActive: Boolean): [Customer!]
+}
+
+# Mutations
+type Mutation {
+    createProduct(input: ProductInput!): Product
+    updateProduct(id: ID!, input: ProductInput!): Product
+    deleteProduct(id: ID!): Boolean
+
+    createSale(input: SaleInput!): Sale
+    updateSaleStatus(id: ID!, status: String!): Sale
+    cancelSale(id: ID!): Boolean
+
+    createStockMovement(input: StockMovementInput!): Stock
+}
+
+input ProductInput {
+    sku: String!
+    name: String!
+    description: String
+    unitId: ID!
+    categoryId: ID
+    brandId: ID
+    originCountryId: ID
+    isActive: Boolean
+}
+
+input SaleInput {
+    customerId: ID
+    shopId: ID!
+    employeeId: ID
+    items: [SaleItemInput!]!
+}
+
+input SaleItemInput {
+    productId: ID!
+    quantity: Float!
+    unitPrice: Float!
+    discountAmount: Float
+}
+
+input StockMovementInput {
+    productId: ID!
+    warehouseId: ID!
+    changeType: String!   # IN, OUT, RESERVE, RELEASE, ADJUST
+    quantityChange: Float!
+    referenceType: String
+    referenceId: ID
+}
