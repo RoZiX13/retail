@@ -1,15 +1,6 @@
 package roz.tan.retail.models;
 
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,14 +17,14 @@ import java.util.Objects;
 @Table(
         name = "sale_price",
         uniqueConstraints = {
-        @UniqueConstraint(
-                name = "uq_sale_price_period",
-                columnNames = {
-                        "product_id",
-                        "shop_id",
-                        "valid_from"
-                })
-})
+                @UniqueConstraint(
+                        name = "uq_sale_price_period",
+                        columnNames = {
+                                "product_id",
+                                "shop_id",
+                                "valid_from"
+                        })
+        })
 public class SalePrice {
 
     @Id

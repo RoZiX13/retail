@@ -11,10 +11,10 @@ import java.util.Set;
 public interface CountryRepository extends JpaRepository<Country, Integer> {
 
     @Query("""
-           SELECT c
-           FROM Country c
-           WHERE c.id IN :ids
-           """)
-    public Set<Country> findAllByIds(@Param("ids") List<Integer> ids);
+            SELECT c
+            FROM Country c
+            WHERE c.id IN :ids
+            """)
+    Set<Country> findAllByIds(@Param("ids") List<Integer> ids);
 
 }

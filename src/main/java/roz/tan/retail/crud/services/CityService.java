@@ -1,6 +1,5 @@
 package roz.tan.retail.crud.services;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -11,13 +10,13 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class CityService {
+public final class CityService {
 
     @Autowired
     @Qualifier("cityRepository")
     private CityRepository cityRepository;
 
-    public Set<City> findAllByIds(List<Integer> ids){
+    public Set<City> findAllByIds(List<Integer> ids) {
         return cityRepository.findAllByIds(ids);
     }
 
