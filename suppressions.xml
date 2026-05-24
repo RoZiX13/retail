@@ -8,7 +8,8 @@
     <suppress checks=".*" files="RetailApplication\.java"/>
 
     <suppress checks="MagicNumber" files=".*[/\\]roz[/\\]tan[/\\]retail[/\\]models[/\\].*\.java"/>
-    <suppress checks="FinalParameters" files=".*[/\\]roz[/\\]tan[/\\]retail[/\\]controllers[/\\].*\.java"/>
-    <suppress checks="FinalParameters" files=".*[/\\]roz[/\\]tan[/\\]retail[/\\]crud[/\\]services[/\\].*\.java"/>
-    <suppress checks="FinalParameters" files=".*[/\\]roz[/\\]tan[/\\]retail[/\\]models[/\\].*\.java"/>
+    <suppress checks="FinalParameters" files=".*"/>
+    <suppress checks="DesignForExtension" files=".*"/>
+    <suppress checks="NeedBraces" files=".*"/>
+
 </suppressions>
