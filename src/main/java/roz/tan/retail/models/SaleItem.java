@@ -82,12 +82,24 @@ public class SaleItem {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         SaleItem saleItem = (SaleItem) o;
-        return saleItemId == saleItem.saleItemId && Double.compare(quantity, saleItem.quantity) == 0 && Double.compare(unitPrice, saleItem.unitPrice) == 0 && Double.compare(discountAmount, saleItem.discountAmount) == 0 && Double.compare(finalPrice, saleItem.finalPrice) == 0 && Objects.equals(createdAt, saleItem.createdAt);
+        return saleItemId == saleItem.saleItemId
+                && Double.compare(quantity, saleItem.quantity) == 0
+                && Double.compare(unitPrice, saleItem.unitPrice) == 0
+                && Double.compare(discountAmount, saleItem.discountAmount) == 0
+                && Double.compare(finalPrice, saleItem.finalPrice) == 0
+                && Objects.equals(createdAt, saleItem.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(saleItemId, quantity, unitPrice, discountAmount, finalPrice, createdAt);
+        return Objects.hash(
+                saleItemId,
+                quantity,
+                unitPrice,
+                discountAmount,
+                finalPrice,
+                createdAt
+        );
     }
 }
 

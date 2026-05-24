@@ -85,11 +85,19 @@ public class InventoryTransaction {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         InventoryTransaction that = (InventoryTransaction) o;
-        return txId == that.txId && Double.compare(quantityChange, that.quantityChange) == 0 && referenceId == that.referenceId && Objects.equals(createdAt, that.createdAt);
+        return txId == that.txId
+                && Double.compare(quantityChange, that.quantityChange) == 0
+                && referenceId == that.referenceId
+                && Objects.equals(createdAt, that.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(txId, quantityChange, referenceId, createdAt);
+        return Objects.hash(
+                txId,
+                quantityChange,
+                referenceId,
+                createdAt
+        );
     }
 }

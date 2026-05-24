@@ -97,11 +97,31 @@ public class Supplier {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Supplier supplier = (Supplier) o;
-        return supplierId == supplier.supplierId && isActive == supplier.isActive && Objects.equals(name, supplier.name) && Objects.equals(inn, supplier.inn) && Objects.equals(kpp, supplier.kpp) && Objects.equals(contactPerson, supplier.contactPerson) && Objects.equals(phone, supplier.phone) && Objects.equals(email, supplier.email) && Objects.equals(address, supplier.address) && Objects.equals(createdAt, supplier.createdAt);
+        return supplierId == supplier.supplierId
+                && isActive == supplier.isActive
+                && Objects.equals(name, supplier.name)
+                && Objects.equals(inn, supplier.inn)
+                && Objects.equals(kpp, supplier.kpp)
+                && Objects.equals(contactPerson, supplier.contactPerson)
+                && Objects.equals(phone, supplier.phone)
+                && Objects.equals(email, supplier.email)
+                && Objects.equals(address, supplier.address)
+                && Objects.equals(createdAt, supplier.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(supplierId, name, inn, kpp, contactPerson, phone, email, address, isActive, createdAt);
+        return Objects.hash(
+                supplierId,
+                name,
+                inn,
+                kpp,
+                contactPerson,
+                phone,
+                email,
+                address,
+                isActive,
+                createdAt
+        );
     }
 }

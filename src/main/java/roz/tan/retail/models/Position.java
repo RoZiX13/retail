@@ -41,11 +41,15 @@ public class Position {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Position position = (Position) o;
-        return positionId == position.positionId && Objects.equals(name, position.name);
+        return positionId == position.positionId
+                && Objects.equals(name, position.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(positionId, name);
+        return Objects.hash(
+                positionId,
+                name
+        );
     }
 }

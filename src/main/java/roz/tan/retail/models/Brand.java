@@ -54,11 +54,17 @@ public class Brand {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Brand brand = (Brand) o;
-        return brandId == brand.brandId && isActive == brand.isActive && Objects.equals(name, brand.name);
+        return brandId == brand.brandId
+                && isActive == brand.isActive
+                && Objects.equals(name, brand.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(brandId, name, isActive);
+        return Objects.hash(
+                brandId,
+                name,
+                isActive
+        );
     }
 }

@@ -83,11 +83,21 @@ public class Stock {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Stock stock = (Stock) o;
-        return stockId == stock.stockId && Double.compare(quantity, stock.quantity) == 0 && Double.compare(reservedQuantity, stock.reservedQuantity) == 0 && Objects.equals(lastUpdated, stock.lastUpdated) && Objects.equals(createdAt, stock.createdAt);
+        return stockId == stock.stockId
+                && Double.compare(quantity, stock.quantity) == 0
+                && Double.compare(reservedQuantity, stock.reservedQuantity) == 0
+                && Objects.equals(lastUpdated, stock.lastUpdated)
+                && Objects.equals(createdAt, stock.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(stockId, quantity, reservedQuantity, lastUpdated, createdAt);
+        return Objects.hash(
+                stockId,
+                quantity,
+                reservedQuantity,
+                lastUpdated,
+                createdAt
+        );
     }
 }

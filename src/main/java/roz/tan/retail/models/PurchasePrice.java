@@ -87,11 +87,21 @@ public class PurchasePrice {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         PurchasePrice that = (PurchasePrice) o;
-        return purchasePriceId == that.purchasePriceId && Double.compare(priceValue, that.priceValue) == 0 && Objects.equals(validFrom, that.validFrom) && Objects.equals(validTo, that.validTo) && Objects.equals(createdAt, that.createdAt);
+        return purchasePriceId == that.purchasePriceId
+                && Double.compare(priceValue, that.priceValue) == 0
+                && Objects.equals(validFrom, that.validFrom)
+                && Objects.equals(validTo, that.validTo)
+                && Objects.equals(createdAt, that.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(purchasePriceId, priceValue, validFrom, validTo, createdAt);
+        return Objects.hash(
+                purchasePriceId,
+                priceValue,
+                validFrom,
+                validTo,
+                createdAt
+        );
     }
 }

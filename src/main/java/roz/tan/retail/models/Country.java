@@ -47,11 +47,17 @@ public class Country {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Country country = (Country) o;
-        return countryId == country.countryId && Objects.equals(name, country.name) && Objects.equals(code, country.code);
+        return countryId == country.countryId
+                && Objects.equals(name, country.name)
+                && Objects.equals(code, country.code);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(countryId, name, code);
+        return Objects.hash(
+                countryId,
+                name,
+                code
+        );
     }
 }

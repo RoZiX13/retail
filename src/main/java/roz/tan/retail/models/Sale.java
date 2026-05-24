@@ -77,11 +77,17 @@ public class Sale {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Sale sale = (Sale) o;
-        return saleId == sale.saleId && Objects.equals(saleDatetime, sale.saleDatetime) && Objects.equals(createdAt, sale.createdAt);
+        return saleId == sale.saleId
+                && Objects.equals(saleDatetime, sale.saleDatetime)
+                && Objects.equals(createdAt, sale.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(saleId, saleDatetime, createdAt);
+        return Objects.hash(
+                saleId,
+                saleDatetime,
+                createdAt
+        );
     }
 }

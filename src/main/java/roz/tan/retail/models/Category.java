@@ -61,11 +61,19 @@ public class Category {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
-        return categoryId == category.categoryId && isActive == category.isActive && Objects.equals(name, category.name) && Objects.equals(parent, category.parent);
+        return categoryId == category.categoryId
+                && isActive == category.isActive
+                && Objects.equals(name, category.name)
+                && Objects.equals(parent, category.parent);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(categoryId, name, parent, isActive);
+        return Objects.hash(
+                categoryId,
+                name,
+                parent,
+                isActive
+        );
     }
 }

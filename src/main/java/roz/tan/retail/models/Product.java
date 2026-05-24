@@ -89,11 +89,23 @@ public class Product {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return productId == product.productId && isActive == product.isActive && Objects.equals(sku, product.sku) && Objects.equals(name, product.name) && Objects.equals(description, product.description) && Objects.equals(createdAt, product.createdAt);
+        return productId == product.productId
+                && isActive == product.isActive
+                && Objects.equals(sku, product.sku)
+                && Objects.equals(name, product.name)
+                && Objects.equals(description, product.description)
+                && Objects.equals(createdAt, product.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, sku, name, description, isActive, createdAt);
+        return Objects.hash(
+                productId,
+                sku,
+                name,
+                description,
+                isActive,
+                createdAt
+        );
     }
 }

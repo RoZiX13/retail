@@ -49,11 +49,17 @@ public class Unit {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Unit unit = (Unit) o;
-        return unitId == unit.unitId && Objects.equals(fullName, unit.fullName) && Objects.equals(shortName, unit.shortName);
+        return unitId == unit.unitId
+                && Objects.equals(fullName, unit.fullName)
+                && Objects.equals(shortName, unit.shortName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(unitId, fullName, shortName);
+        return Objects.hash(
+                unitId,
+                fullName,
+                shortName
+        );
     }
 }

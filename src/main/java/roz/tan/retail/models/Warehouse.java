@@ -66,11 +66,21 @@ public class Warehouse {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Warehouse warehouse = (Warehouse) o;
-        return warehouseId == warehouse.warehouseId && isActive == warehouse.isActive && Objects.equals(name, warehouse.name) && Objects.equals(address, warehouse.address) && Objects.equals(createdAt, warehouse.createdAt);
+        return warehouseId == warehouse.warehouseId
+                && isActive == warehouse.isActive
+                && Objects.equals(name, warehouse.name)
+                && Objects.equals(address, warehouse.address)
+                && Objects.equals(createdAt, warehouse.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(warehouseId, name, address, isActive, createdAt);
+        return Objects.hash(
+                warehouseId,
+                name,
+                address,
+                isActive,
+                createdAt
+        );
     }
 }
