@@ -3,7 +3,6 @@ package roz.tan.retail.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
@@ -24,17 +23,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(
-        name = "purchase_price",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "uq_purchase_price_period",
-                        columnNames = {
-                                "product_id",
-                                "supplier_id",
-                                "valid_from"
-                        })
-        })
+@Table(name = "purchase_price")
 public class PurchasePrice {
 
     @Id
@@ -51,31 +40,11 @@ public class PurchasePrice {
     )
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "supplier_id",
-            nullable = false
-    )
-    private Supplier supplier;
-
     @Column(
             name = "price_value",
             nullable = false
     )
     private double priceValue;
-
-    @Column(
-            name = "valid_from",
-            nullable = false,
-            columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
-    )
-    private LocalDateTime validFrom;
-
-    @Column(
-            name = "valid_to",
-            columnDefinition = "TIMESTAMPTZ"
-    )
-    private LocalDateTime validTo;
 
     @Column(
             name = "created_at",
@@ -89,8 +58,6 @@ public class PurchasePrice {
         PurchasePrice that = (PurchasePrice) o;
         return purchasePriceId == that.purchasePriceId
                 && Double.compare(priceValue, that.priceValue) == 0
-                && Objects.equals(validFrom, that.validFrom)
-                && Objects.equals(validTo, that.validTo)
                 && Objects.equals(createdAt, that.createdAt);
     }
 
@@ -99,8 +66,6 @@ public class PurchasePrice {
         return Objects.hash(
                 purchasePriceId,
                 priceValue,
-                validFrom,
-                validTo,
                 createdAt
         );
     }

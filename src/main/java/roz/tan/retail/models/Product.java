@@ -1,14 +1,6 @@
 package roz.tan.retail.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 @Data
 @Builder
@@ -69,9 +62,11 @@ public class Product {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "origin_country_id")
-    private Country originCountry;
+    @OneToMany(mappedBy = "product")
+    private Set<PurchasePrice> purchasePrice;
+
+    @OneToMany(mappedBy = "product")
+    private Set<SalePrice> salePrice;
 
     @Column(
             name = "is_active",

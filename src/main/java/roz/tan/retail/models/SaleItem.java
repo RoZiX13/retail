@@ -72,12 +72,6 @@ public class SaleItem {
     )
     private double finalPrice;
 
-    @Column(
-            name = "created_at",
-            columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
-    )
-    private LocalDateTime createdAt;
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -86,8 +80,7 @@ public class SaleItem {
                 && Double.compare(quantity, saleItem.quantity) == 0
                 && Double.compare(unitPrice, saleItem.unitPrice) == 0
                 && Double.compare(discountAmount, saleItem.discountAmount) == 0
-                && Double.compare(finalPrice, saleItem.finalPrice) == 0
-                && Objects.equals(createdAt, saleItem.createdAt);
+                && Double.compare(finalPrice, saleItem.finalPrice) == 0;
     }
 
     @Override
@@ -97,8 +90,7 @@ public class SaleItem {
                 quantity,
                 unitPrice,
                 discountAmount,
-                finalPrice,
-                createdAt
+                finalPrice
         );
     }
 }

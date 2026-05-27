@@ -50,7 +50,6 @@ type Stock {
     warehouse: Warehouse!
     quantity: Float!
     reservedQuantity: Float!
-    lastUpdated: String
 }
 
 type Warehouse {
@@ -156,74 +155,209 @@ type Query {
     categories(ids: [ID!]!): [Category!]!
     units(ids: [ID!]!): [Unit!]!
     brands(ids: [ID!]!): [Brand!]!
+    products(ids: [ID!]!): [Product!]!
+    warehouses(ids: [ID!]!): [Warehouse!]!
+    sales(ids: [ID!]!): [Sale!]!
+    employees(ids: [ID!]!): [Employee!]!
+    positions(ids: [ID!]!): [Position!]!
     products_by_filter(
         sku: String,
         categoryId: ID,
         brandId: ID,
         isActive: Boolean
     ): [Product!]
-    product(id: ID!): Product
-
-    # Склад
+    sales_by_shop_id_and_customer_id(shopId: ID, customerId: ID): [Sale!]
     stocks(warehouseId: ID, productId: ID): [Stock!]
-    warehouses: [Warehouse!]
-
-    # Продажи
-    sales(shopId: ID, customerId: ID, status: String): [Sale!]
-    sale(id: ID!): Sale
-
-    # Персонал
-    employees(shopId: ID, warehouseId: ID): [Employee!]
-    positions: [Position!]
-
-    # Поставщики / Клиенты
-    suppliers(isActive: Boolean): [Supplier!]
-    customers(isActive: Boolean): [Customer!]
+    suppliers(ids: [ID!]!): [Supplier!]!
+    customers(ids: [ID!]!): [Customer!]!
+    suppliers_by_active(active: Boolean): [Supplier!]
+    customers_by_active(active: Boolean): [Customer!]
 }
 
-# Mutations
+# Дополнение к Mutation и определения входных типов на основе Query
+
+# ============================================
+# Mutation
+# ============================================
+
 type Mutation {
+    # Продукты
     createProduct(input: ProductInput!): Product
     updateProduct(id: ID!, input: ProductInput!): Product
     deleteProduct(id: ID!): Boolean
 
+    # Продажи
     createSale(input: SaleInput!): Sale
-    updateSaleStatus(id: ID!, status: String!): Sale
-    cancelSale(id: ID!): Boolean
+    deleteSale(id: ID!): Boolean
 
+    # Движение товаров (склад)
     createStockMovement(input: StockMovementInput!): Stock
+
+    # Категории
+    createCategory(input: CategoryInput!): Category
+    updateCategory(id: ID!, input: CategoryInput!): Category
+    deleteCategory(id: ID!): Boolean
+
+    # Бренды
+    createBrand(input: BrandInput!): Brand
+    updateBrand(id: ID!, input: BrandInput!): Brand
+    deleteBrand(id: ID!): Boolean
+
+    # Единицы измерения
+    createUnit(input: UnitInput!): Unit
+    updateUnit(id: ID!, input: UnitInput!): Unit
+    deleteUnit(id: ID!): Boolean
+
+    # Склады
+    createWarehouse(input: WarehouseInput!): Warehouse
+    updateWarehouse(id: ID!, input: WarehouseInput!): Warehouse
+    deleteWarehouse(id: ID!): Boolean
+
+    # Сотрудники
+    createEmployee(input: EmployeeInput!): Employee
+    updateEmployee(id: ID!, input: EmployeeInput!): Employee
+    deleteEmployee(id: ID!): Boolean
+
+    # Должности
+    createPosition(input: PositionInput!): Position
+    updatePosition(id: ID!, input: PositionInput!): Position
+    deletePosition(id: ID!): Boolean
+
+    # Поставщики
+    createSupplier(input: SupplierInput!): Supplier
+    updateSupplier(id: ID!, input: SupplierInput!): Supplier
+    deleteSupplier(id: ID!): Boolean
+
+    # Клиенты
+    createCustomer(input: CustomerInput!): Customer
+    updateCustomer(id: ID!, input: CustomerInput!): Customer
+    deleteCustomer(id: ID!): Boolean
+
+    # Города
+    createCity(input: CityInput!): City
+    updateCity(id: ID!, input: CityInput!): City
+    deleteCity(id: ID!): Boolean
+
+    # Страны
+    createCountry(input: CountryInput!): Country
+    updateCountry(id: ID!, input: CountryInput!): Country
+    deleteCountry(id: ID!): Boolean
 }
+
+# ============================================
+# Входные типы (Input Types)
+# ============================================
 
 input ProductInput {
     sku: String!
     name: String!
     description: String
-    unitId: ID!
     categoryId: ID
     brandId: ID
-    originCountryId: ID
+    unitId: ID
     isActive: Boolean
+    price: Float
 }
 
 input SaleInput {
-    customerId: ID
     shopId: ID!
-    employeeId: ID
+    customerId: ID
+    employeeId: ID!
+    saleDate: String!
     items: [SaleItemInput!]!
+    status: String
 }
 
 input SaleItemInput {
     productId: ID!
-    quantity: Float!
-    unitPrice: Float!
-    discountAmount: Float
+    quantity: Int!
+}
+
+enum ChangeType {
+    IN
+    OUT
+    RESERVE
+    RELEASE
+    ADJUST
+    RETURN
+}
+
+enum ReferenceType {
+    PURCHASE
+    SALE
+    RETURN
+    MANUAL
 }
 
 input StockMovementInput {
-    productId: ID!
-    warehouseId: ID!
-    changeType: String!   # IN, OUT, RESERVE, RELEASE, ADJUST
-    quantityChange: Float!
-    referenceType: String
-    referenceId: ID
+    productId: Int!
+    warehouseId: Int!
+    quantity: Float!
+    type: ChangeType!
+    referenceType: ReferenceType!
+}
+
+input CategoryInput {
+    name: String!
+    description: String
+    parentId: ID
+}
+
+input BrandInput {
+    name: String!
+    description: String
+    countryId: ID
+}
+
+input UnitInput {
+    name: String!
+    symbol: String
+}
+
+input WarehouseInput {
+    name: String!
+    address: String
+    cityId: ID
+    isActive: Boolean
+}
+
+input EmployeeInput {
+    firstName: String!
+    lastName: String!
+    positionId: ID!
+    email: String
+    phone: String
+}
+
+input PositionInput {
+    title: String!
+}
+
+input SupplierInput {
+    name: String!
+    contactPerson: String
+    phone: String
+    email: String
+    address: String
+    isActive: Boolean
+}
+
+input CustomerInput {
+    firstName: String!
+    lastName: String!
+    email: String
+    phone: String
+    address: String
+    isActive: Boolean
+}
+
+input CityInput {
+    name: String!
+    countryId: ID!
+    region: String
+}
+
+input CountryInput {
+    name: String!
+    code: String!
 }

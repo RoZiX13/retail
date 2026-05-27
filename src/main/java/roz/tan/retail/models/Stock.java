@@ -24,14 +24,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "stock", uniqueConstraints = {
-        @UniqueConstraint(
-                name = "uq_stock_product_warehouse",
-                columnNames = {
-                        "product_id", "warehouse_id"
-                }
-        )
-})
+@Table(name = "stock")
 public class Stock {
 
     @Id
@@ -68,12 +61,6 @@ public class Stock {
     private double reservedQuantity;
 
     @Column(
-            name = "last_updated",
-            columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
-    )
-    private LocalDateTime lastUpdated;
-
-    @Column(
             name = "created_at",
             columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
     )
@@ -86,7 +73,6 @@ public class Stock {
         return stockId == stock.stockId
                 && Double.compare(quantity, stock.quantity) == 0
                 && Double.compare(reservedQuantity, stock.reservedQuantity) == 0
-                && Objects.equals(lastUpdated, stock.lastUpdated)
                 && Objects.equals(createdAt, stock.createdAt);
     }
 
@@ -96,7 +82,6 @@ public class Stock {
                 stockId,
                 quantity,
                 reservedQuantity,
-                lastUpdated,
                 createdAt
         );
     }

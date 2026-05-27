@@ -3,7 +3,6 @@ package roz.tan.retail.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
@@ -24,17 +23,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(
-        name = "sale_price",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "uq_sale_price_period",
-                        columnNames = {
-                                "product_id",
-                                "shop_id",
-                                "valid_from"
-                        })
-        })
+@Table(name = "sale_price")
 public class SalePrice {
 
     @Id
@@ -51,13 +40,6 @@ public class SalePrice {
     )
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "shop_id",
-            nullable = false
-    )
-    private Shop shop;
-
     @Column(name = "price_value",
             nullable = false
     )
@@ -68,19 +50,6 @@ public class SalePrice {
             columnDefinition = "DECIMAL(12,2) DEFAULT 0"
     )
     private double discountAmount;
-
-    @Column(
-            name = "valid_from",
-            nullable = false,
-            columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP"
-    )
-    private LocalDateTime validFrom;
-
-    @Column(
-            name = "valid_to",
-            columnDefinition = "TIMESTAMPTZ"
-    )
-    private LocalDateTime validTo;
 
     @Column(
             name = "created_at",
@@ -95,8 +64,6 @@ public class SalePrice {
         return salePriceId == salePrice.salePriceId
                 && Double.compare(priceValue, salePrice.priceValue) == 0
                 && Double.compare(discountAmount, salePrice.discountAmount) == 0
-                && Objects.equals(validFrom, salePrice.validFrom)
-                && Objects.equals(validTo, salePrice.validTo)
                 && Objects.equals(createdAt, salePrice.createdAt);
     }
 
@@ -106,8 +73,6 @@ public class SalePrice {
                 salePriceId,
                 priceValue,
                 discountAmount,
-                validFrom,
-                validTo,
                 createdAt
         );
     }
