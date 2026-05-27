@@ -24,7 +24,8 @@ public interface SaleRepository
             FROM Sale sal
             JOIN FETCH sal.customer AS cust
             JOIN FETCH sal.shop AS sh
-            WHERE sal.shop.shopId = :shopId AND sal.customer.customerId = :customerId
+            WHERE sal.shop.shopId = :shopId 
+                        AND sal.customer.customerId = :customerId
             """)
     Set<Sale> findAllByShopIdAndCustomerId(
             @Param("shopId") int shopId,

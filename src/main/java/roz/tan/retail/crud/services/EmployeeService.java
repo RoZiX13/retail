@@ -28,28 +28,45 @@ public class EmployeeService {
     private PositionRepository positionRepository;
 
     public Set<Employee> findAllByIds(List<Integer> ids) {
-        return employeeRepository.findAllByIds(ids);
+        return employeeRepository
+                .findAllByIds(ids);
     }
 
     @Transactional(readOnly = false)
     public Employee save(EmployeeInput input) {
         // 1. Валидация обязательных полей
-        if (input.getFirstName() == null || input.getFirstName().isBlank()) {
-            throw new IllegalArgumentException("First name must not be null or blank");
+        if (input.getFirstName() == null
+                || input.getFirstName().isBlank()
+        ) {
+            throw new IllegalArgumentException(
+                    "First name must not be null or blank"
+            );
         }
-        if (input.getLastName() == null || input.getLastName().isBlank()) {
-            throw new IllegalArgumentException("Last name must not be null or blank");
+        if (input.getLastName() == null
+                || input.getLastName().isBlank()
+        ) {
+            throw new IllegalArgumentException(
+                    "Last name must not be null or blank"
+            );
         }
 
         // 2. Загрузка должности (если указана)
         Position position = null;
         if (input.getPositionId() != null) {
-            position = positionRepository.findById(input.getPositionId())
-                    .orElseThrow(() -> new EntityNotFoundException("Position not found with id: " + input.getPositionId()));
+            position = positionRepository
+                    .findById(input.getPositionId()
+                    )
+                    .orElseThrow(() ->
+                            new EntityNotFoundException(
+                                    "Position not found with id: "
+                                            + input.getPositionId()
+                            )
+                    );
         }
 
         // 4. Создание сотрудника (patronymic, manager, shop, warehouse – не переданы, остаются null)
-        Employee employee = Employee.builder()
+        Employee employee = Employee
+                .builder()
                 .firstName(input.getFirstName())
                 .lastName(input.getLastName())
                 .patronymic(null)  // в Input нет patronymic
@@ -67,57 +84,107 @@ public class EmployeeService {
     }
 
     @Transactional(readOnly = false)
-    public Employee update(Integer id, EmployeeInput input) {
+    public Employee update(
+            Integer id,
+            EmployeeInput input
+    ) {
         // 1. Проверка существования
-        Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Employee not found with id: " + id));
+        Employee employee = employeeRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "Employee not found with id: "
+                                        + id
+                        )
+                );
 
         // 2. Обновление имени (если передано)
-        if (input.getFirstName() != null && !input.getFirstName().isBlank()) {
-            employee.setFirstName(input.getFirstName());
-        } else if (input.getFirstName() != null && input.getFirstName().isBlank()) {
-            throw new IllegalArgumentException("First name cannot be blank");
+        if (input.getFirstName() != null
+                && !input.getFirstName().isBlank()
+        ) {
+            employee
+                    .setFirstName(input.getFirstName());
+        } else if (input.getFirstName() != null
+                && input.getFirstName().isBlank()
+        ) {
+            throw new IllegalArgumentException(
+                    "First name cannot be blank"
+            );
         }
 
-        if (input.getLastName() != null && !input.getLastName().isBlank()) {
-            employee.setLastName(input.getLastName());
-        } else if (input.getLastName() != null && input.getLastName().isBlank()) {
-            throw new IllegalArgumentException("Last name cannot be blank");
+        if (input.getLastName() != null
+                && !input.getLastName().isBlank()
+        ) {
+            employee
+                    .setLastName(
+                            input.getLastName()
+                    );
+        } else if (input.getLastName() != null
+                && input.getLastName().isBlank()
+        ) {
+            throw new IllegalArgumentException(
+                    "Last name cannot be blank"
+            );
         }
 
         // 3. Обновление email (если передан и изменился)
         if (input.getEmail() != null) {
-            if (!input.getEmail().equals(employee.getEmail())) {
-                employee.setEmail(input.getEmail().isBlank() ? null : input.getEmail());
+            if (!input.getEmail()
+                    .equals(employee.getEmail())
+            ) {
+                employee
+                        .setEmail(
+                                input.getEmail().isBlank()
+                                        ? null
+                                        : input.getEmail()
+                        );
             }
         }
 
         // 4. Обновление телефона
         if (input.getPhone() != null) {
-            employee.setPhone(input.getPhone().isBlank() ? null : input.getPhone());
+            employee.setPhone(
+                    input.getPhone().isBlank()
+                            ? null
+                            : input.getPhone()
+            );
         }
 
         // 5. Обновление должности (если передан positionId)
         if (input.getPositionId() != null) {
-            Position position = positionRepository.findById(input.getPositionId())
-                    .orElseThrow(() -> new EntityNotFoundException("Position not found with id: " + input.getPositionId()));
+            Position position = positionRepository
+                    .findById(input.getPositionId())
+                    .orElseThrow(() ->
+                            new EntityNotFoundException(
+                                    "Position not found with id: "
+                                            + input.getPositionId()
+                            )
+                    );
             employee.setPosition(position);
         }
 
         // Остальные поля (patronymic, manager, shop, warehouse, isActive) не обновляются,
         // т.к. их нет в EmployeeInput. При необходимости их можно добавить в DTO.
 
-        return employeeRepository.save(employee);
+        return employeeRepository
+                .save(employee);
     }
 
     @Transactional(readOnly = false)
     public Boolean deleteById(Integer id) {
-        Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Employee not found with id: " + id));
+        Employee employee = employeeRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "Employee not found with id: "
+                                        + id
+                        )
+                );
 
         // Удаление. Если есть зависимые записи (например, сотрудник является менеджером для других),
         // БД выбросит исключение (при условии ON DELETE RESTRICT или аналогичного ограничения).
-        employeeRepository.delete(employee);
+        employeeRepository
+                .delete(employee);
         return true;
     }
 }

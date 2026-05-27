@@ -3,11 +3,21 @@ package roz.tan.retail.crud.services;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import roz.tan.retail.crud.repositories.*;
-import roz.tan.retail.models.*;
+import roz.tan.retail.crud.repositories.CustomerRepository;
+import roz.tan.retail.crud.repositories.EmployeeRepository;
+import roz.tan.retail.crud.repositories.SaleRepository;
+import roz.tan.retail.crud.repositories.ShopRepository;
+import roz.tan.retail.crud.repositories.ProductRepository;
+import roz.tan.retail.crud.repositories.SaleItemRepository;
+import roz.tan.retail.models.Sale;
+import roz.tan.retail.models.Customer;
+import roz.tan.retail.models.Shop;
+import roz.tan.retail.models.Employee;
+import roz.tan.retail.models.SaleItem;
+import roz.tan.retail.models.Product;
+import roz.tan.retail.models.SalePrice;
 import roz.tan.retail.utils.dto.SaleInput;
 import roz.tan.retail.utils.dto.SaleItemInput;
 
@@ -45,41 +55,77 @@ public class SaleService {
     private SaleItemRepository saleItemRepository;
 
     public Set<Sale> findAllByIds(List<Integer> ids) {
-        return saleRepository.findAllByIds(ids);
+        return saleRepository
+                .findAllByIds(ids);
     }
 
-    public Set<Sale> findAllByShopIdAndCustomerId(int shopId, int customerId) {
+    public Set<Sale> findAllByShopIdAndCustomerId(
+            int shopId,
+            int customerId
+    ) {
         return saleRepository
-                .findAllByShopIdAndCustomerId(shopId, customerId);
+                .findAllByShopIdAndCustomerId(
+                        shopId,
+                        customerId
+                );
     }
 
     @Transactional(readOnly = false)
     public Sale save(SaleInput input) {
         // 1. Валидация обязательных полей
         if (input.getCustomerId() == null) {
-            throw new IllegalArgumentException("Customer ID must not be null");
+            throw new IllegalArgumentException(
+                    "Customer ID must not be null"
+            );
         }
         if (input.getShopId() == null) {
-            throw new IllegalArgumentException("Shop ID must not be null");
+            throw new IllegalArgumentException(
+                    "Shop ID must not be null"
+            );
         }
         if (input.getEmployeeId() == null) {
-            throw new IllegalArgumentException("Employee ID must not be null");
+            throw new IllegalArgumentException(
+                    "Employee ID must not be null"
+            );
         }
-        if (input.getItems() == null || input.getItems().isEmpty()) {
-            throw new IllegalArgumentException("Sale items must not be null or empty");
+        if (input.getItems() == null
+                || input.getItems().isEmpty()
+        ) {
+            throw new IllegalArgumentException(
+                    "Sale items must not be null or empty"
+            );
         }
 
         // 2. Загрузка и проверка Customer
-        Customer customer = customerRepository.findById(input.getCustomerId())
-                .orElseThrow(() -> new EntityNotFoundException("Customer not found with id: " + input.getCustomerId()));
+        Customer customer = customerRepository.findById(
+                input.getCustomerId()
+                )
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "Customer not found with id: "
+                                        + input.getCustomerId()
+                        )
+                );
 
         // 3. Загрузка и проверка Shop
-        Shop shop = shopRepository.findById(input.getShopId())
-                .orElseThrow(() -> new EntityNotFoundException("Shop not found with id: " + input.getShopId()));
+        Shop shop = shopRepository
+                .findById(input.getShopId())
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "Shop not found with id: "
+                                        + input.getShopId()
+                        )
+                );
 
         // 4. Загрузка и проверка Employee (исправлено: используется input.getEmployeeId(), а не getShopId)
-        Employee employee = employeeRepository.findById(input.getEmployeeId())
-                .orElseThrow(() -> new EntityNotFoundException("Employee not found with id: " + input.getEmployeeId()));
+        Employee employee = employeeRepository
+                .findById(input.getEmployeeId())
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "Employee not found with id: "
+                                        + input.getEmployeeId()
+                        )
+                );
 
         // 5. Создание Sale
         Sale sale = new Sale();
@@ -91,29 +137,57 @@ public class SaleService {
         // 6. Обработка позиций SaleItem
         Set<SaleItem> saleItemSet = new HashSet<>();
         for (SaleItemInput saleItemInput : input.getItems()) {
-            if (saleItemInput.getProductId() == null) {
-                throw new IllegalArgumentException("Product ID in sale item must not be null");
+            if (
+                    saleItemInput.getProductId() == null
+            ) {
+                throw new IllegalArgumentException(
+                        "Product ID in sale item must not be null"
+                );
             }
-            if (saleItemInput.getQuantity() == null || saleItemInput.getQuantity() <= 0) {
-                throw new IllegalArgumentException("Quantity must be positive for product id: " + saleItemInput.getProductId());
+            if (saleItemInput.getQuantity() == null
+                    || saleItemInput.getQuantity() <= 0
+            ) {
+                throw new IllegalArgumentException(
+                        "Quantity must be positive for product id: "
+                                + saleItemInput.getProductId()
+                );
             }
 
-            Product product = productRepository.findById(saleItemInput.getProductId())
-                    .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + saleItemInput.getProductId()));
+            Product product = productRepository
+                    .findById(saleItemInput.getProductId())
+                    .orElseThrow(() ->
+                            new EntityNotFoundException(
+                                    "Product not found with id: "
+                                            + saleItemInput.getProductId()
+                            )
+                    );
 
-            SalePrice salePrice = product.getSalePrice().stream()
-                    .max(Comparator.comparing(SalePrice::getCreatedAt))
+            SalePrice salePrice = product
+                    .getSalePrice()
+                    .stream()
+                    .max(
+                            Comparator
+                                    .comparing(
+                                            SalePrice::getCreatedAt
+                                    )
+                    )
                     .orElse(null); // предполагается, что у продукта есть актуальная цена продажи
             if (salePrice == null) {
-                throw new IllegalStateException("No sale price defined for product id: " + product.getProductId());
+                throw new IllegalStateException(
+                        "No sale price defined for product id: "
+                                + product.getProductId()
+                );
             }
 
-            double unitPrice = salePrice.getPriceValue();
-            double discountAmount = salePrice.getDiscountAmount();
+            double unitPrice = salePrice
+                    .getPriceValue();
+            double discountAmount = salePrice
+                    .getDiscountAmount();
 
             // unitPrice и discountAmount на строку передаются в SaleItem,
             // final_price вычисляется БД автоматически (GENERATED ALWAYS)
-            saleItemSet.add(SaleItem.builder()
+            saleItemSet.add(
+                    SaleItem.builder()
                     .sale(sale) // будет установлено при каскадном сохранении
                     .product(product)
                     .quantity(saleItemInput.getQuantity())

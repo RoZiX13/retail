@@ -20,60 +20,103 @@ public class UnitService {
     private UnitRepository unitRepository;
 
     public Set<Unit> findAllByIds(List<Integer> ids) {
-        return unitRepository.findAllByIds(ids);
+        return unitRepository
+                .findAllByIds(ids);
     }
 
     @Transactional
     public Unit save(UnitInput input) {
         // 1. Валидация полей
-        if (input.getName() == null || input.getName().isBlank()) {
-            throw new IllegalArgumentException("Unit full name must not be null or blank");
+        if (input.getName() == null
+                || input.getName().isBlank()) {
+            throw new IllegalArgumentException(
+                    "Unit full name must not be null or blank"
+            );
         }
-        if (input.getSymbol() == null || input.getSymbol().isBlank()) {
-            throw new IllegalArgumentException("Unit short name (symbol) must not be null or blank");
+        if (input.getSymbol() == null
+                || input.getSymbol().isBlank()) {
+            throw new IllegalArgumentException(
+                    "Unit short name (symbol) must not be null or blank"
+            );
         }
 
         // 2. Создание и сохранение
-        Unit unit = Unit.builder()
+        Unit unit = Unit
+                .builder()
                 .fullName(input.getName())
                 .shortName(input.getSymbol())
                 .build();
 
-        return unitRepository.save(unit);
+        return unitRepository
+                .save(unit);
     }
 
     @Transactional
-    public Unit update(Integer id, UnitInput input) {
+    public Unit update(
+            Integer id,
+            UnitInput input
+    ) {
         // 1. Проверка существования
-        Unit unit = unitRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Unit not found with id: " + id));
+        Unit unit = unitRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "Unit not found with id: "
+                                        + id
+                        )
+                );
 
         // 2. Обновление full_name (если передано и изменилось)
-        if (input.getName() != null && !input.getName().isBlank()) {
-            if (!input.getName().equals(unit.getFullName())) {
-                unit.setFullName(input.getName());
+        if (input.getName() != null
+                && !input.getName().isBlank()
+        ) {
+            if (!input.getName()
+                    .equals(unit.getFullName())) {
+                unit.setFullName(
+                        input.getName()
+                );
             }
-        } else if (input.getName() != null && input.getName().isBlank()) {
-            throw new IllegalArgumentException("Unit full name cannot be blank");
+        } else if (input.getName() != null
+                && input.getName().isBlank()
+        ) {
+            throw new IllegalArgumentException(
+                    "Unit full name cannot be blank"
+            );
         }
 
         // 3. Обновление short_name (если передано и изменилось)
-        if (input.getSymbol() != null && !input.getSymbol().isBlank()) {
-            if (!input.getSymbol().equals(unit.getShortName())) {
-                unit.setShortName(input.getSymbol());
+        if (input.getSymbol() != null
+                && !input.getSymbol().isBlank()
+        ) {
+            if (!input.getSymbol()
+                    .equals(unit.getShortName())
+            ) {
+                unit.setShortName(
+                        input.getSymbol()
+                );
             }
-        } else if (input.getSymbol() != null && input.getSymbol().isBlank()) {
-            throw new IllegalArgumentException("Unit short name cannot be blank");
+        } else if (input.getSymbol() != null
+                && input.getSymbol().isBlank()
+        ) {
+            throw new IllegalArgumentException(
+                    "Unit short name cannot be blank"
+            );
         }
 
-        return unitRepository.save(unit);
+        return unitRepository
+                .save(unit);
     }
 
     @Transactional
     public Boolean deleteById(Integer id) {
         // 1. Проверка существования
         Unit unit = unitRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Unit not found with id: " + id));
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "Unit not found with id: "
+                                        + id
+                        )
+                );
 
         // 2. Удаление (если есть ссылающиеся продукты, БД должна защитить через ON DELETE RESTRICT)
         unitRepository.delete(unit);

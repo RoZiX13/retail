@@ -39,121 +39,218 @@ public class SupplierService {
     @Transactional(readOnly = false)
     public Supplier save(SupplierInput input) {
         // 1. Валидация обязательного поля name
-        if (input.getName() == null || input.getName().isBlank()) {
-            throw new IllegalArgumentException("Supplier name must not be null or blank");
+        if (input.getName() == null
+                || input.getName().isBlank()) {
+            throw new IllegalArgumentException(
+                    "Supplier name must not be null or blank"
+            );
         }
 
         // 2. Валидация ИНН (если указан)
-        if (input.getInn() != null && !input.getInn().isBlank()) {
-            if (!INN_PATTERN_10.matcher(input.getInn()).matches() && !INN_PATTERN_12.matcher(input.getInn()).matches()) {
-                throw new IllegalArgumentException("INN must be 10 or 12 digits");
+        if (input.getInn() != null
+                && !input.getInn().isBlank()
+        ) {
+            if (!INN_PATTERN_10
+                    .matcher(input.getInn()).matches()
+                    && !INN_PATTERN_12
+                        .matcher(input.getInn()).matches()
+            ) {
+                throw new IllegalArgumentException(
+                        "INN must be 10 or 12 digits"
+                );
             }
         }
 
         // 3. Валидация КПП (если указан)
-        if (input.getKpp() != null && !input.getKpp().isBlank()) {
-            if (!KPP_PATTERN.matcher(input.getKpp()).matches()) {
-                throw new IllegalArgumentException("KPP must be 9 digits");
+        if (input.getKpp() != null
+                && !input.getKpp().isBlank()
+        ) {
+            if (!KPP_PATTERN
+                    .matcher(
+                            input.getKpp())
+                    .matches()
+            ) {
+                throw new IllegalArgumentException(
+                        "KPP must be 9 digits"
+                );
             }
         }
 
         // 4. Загрузка города (если указан)
         City city = null;
         if (input.getCityId() != null) {
-            city = cityRepository.findById(input.getCityId())
-                    .orElseThrow(() -> new EntityNotFoundException("City not found with id: " + input.getCityId()));
+            city = cityRepository
+                    .findById(input.getCityId())
+                    .orElseThrow(() ->
+                            new EntityNotFoundException(
+                                    "City not found with id: "
+                                            + input.getCityId()
+                            )
+                    );
         }
 
         // 5. Создание поставщика
-        Supplier supplier = Supplier.builder()
+        Supplier supplier =
+                Supplier.builder()
                 .name(input.getName())
                 .inn(input.getInn())
                 .kpp(input.getKpp())
-                .contactPerson(input.getContactPerson())
+                .contactPerson(
+                        input.getContactPerson()
+                )
                 .phone(input.getPhone())
                 .email(input.getEmail())
                 .city(city)
                 .address(input.getAddress())
-                .isActive(input.getIsActive() != null ? input.getIsActive() : true)
+                .isActive(
+                        input.getIsActive() != null
+                                ? input.getIsActive()
+                                : true
+                )
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        return supplierRepository.save(supplier);
+        return supplierRepository
+                .save(supplier);
     }
 
     @Transactional(readOnly = false)
-    public Supplier update(Integer id, SupplierInput input) {
+    public Supplier update(
+            Integer id,
+            SupplierInput input
+    ) {
         // 1. Проверка существования
-        Supplier supplier = supplierRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Supplier not found with id: " + id));
+        Supplier supplier = supplierRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "Supplier not found with id: "
+                                        + id
+                        )
+                );
 
         // 2. Обновление name (если передан)
-        if (input.getName() != null && !input.getName().isBlank()) {
-            supplier.setName(input.getName());
-        } else if (input.getName() != null && input.getName().isBlank()) {
-            throw new IllegalArgumentException("Supplier name cannot be blank");
+        if (input.getName() != null
+                && !input.getName().isBlank()
+        ) {
+            supplier.setName(
+                    input.getName()
+            );
+        } else if (input.getName() != null
+                && input.getName().isBlank()
+        ) {
+            throw new IllegalArgumentException(
+                    "Supplier name cannot be blank"
+            );
         }
 
         // 3. Обновление ИНН (если передан)
         if (input.getInn() != null) {
-            String inn = input.getInn().isBlank() ? null : input.getInn();
-            if (inn != null && !INN_PATTERN_10.matcher(inn).matches() && !INN_PATTERN_12.matcher(inn).matches()) {
-                throw new IllegalArgumentException("INN must be 10 or 12 digits");
+            String inn = input.getInn().isBlank()
+                    ? null
+                    : input.getInn();
+            if (inn != null
+                    && !INN_PATTERN_10
+                        .matcher(inn).matches()
+                    && !INN_PATTERN_12
+                        .matcher(inn).matches()) {
+                throw new IllegalArgumentException(
+                        "INN must be 10 or 12 digits"
+                );
             }
             supplier.setInn(inn);
         }
 
         // 4. Обновление КПП
         if (input.getKpp() != null) {
-            String kpp = input.getKpp().isBlank() ? null : input.getKpp();
-            if (kpp != null && !KPP_PATTERN.matcher(kpp).matches()) {
-                throw new IllegalArgumentException("KPP must be 9 digits");
+            String kpp = input.getKpp().isBlank()
+                    ? null
+                    : input.getKpp();
+            if (kpp != null
+                    && !KPP_PATTERN.matcher(kpp).matches()) {
+                throw new IllegalArgumentException(
+                        "KPP must be 9 digits"
+                );
             }
             supplier.setKpp(kpp);
         }
 
         // 5. Обновление контактного лица
         if (input.getContactPerson() != null) {
-            supplier.setContactPerson(input.getContactPerson().isBlank() ? null : input.getContactPerson());
+            supplier.setContactPerson(
+                    input.getContactPerson().isBlank()
+                            ? null
+                            : input.getContactPerson()
+            );
         }
 
         // 6. Обновление телефона
         if (input.getPhone() != null) {
-            supplier.setPhone(input.getPhone().isBlank() ? null : input.getPhone());
+            supplier.setPhone(
+                    input.getPhone().isBlank()
+                            ? null
+                            : input.getPhone()
+            );
         }
 
         // 7. Обновление email
         if (input.getEmail() != null) {
-            supplier.setEmail(input.getEmail().isBlank() ? null : input.getEmail());
+            supplier.setEmail(
+                    input.getEmail().isBlank()
+                            ? null
+                            : input.getEmail()
+            );
         }
 
         // 8. Обновление города
         if (input.getCityId() != null) {
-            City city = cityRepository.findById(input.getCityId())
-                    .orElseThrow(() -> new EntityNotFoundException("City not found with id: " + input.getCityId()));
+            City city = cityRepository
+                    .findById(input.getCityId())
+                    .orElseThrow(() ->
+                            new EntityNotFoundException(
+                                    "City not found with id: "
+                                            + input.getCityId()
+                            )
+                    );
             supplier.setCity(city);
-        } else if (input.getCityId() == null && supplier.getCity() != null) {
+        } else if (input.getCityId() == null
+                && supplier.getCity() != null
+        ) {
             supplier.setCity(null); // сброс города
         }
 
         // 9. Обновление адреса
         if (input.getAddress() != null) {
-            supplier.setAddress(input.getAddress().isBlank() ? null : input.getAddress());
+            supplier.setAddress(
+                    input.getAddress().isBlank()
+                            ? null
+                            : input.getAddress()
+            );
         }
 
         // 10. Обновление статуса активности
         if (input.getIsActive() != null) {
-            supplier.setActive(input.getIsActive());
+            supplier.setActive(
+                    input.getIsActive()
+            );
         }
 
-        return supplierRepository.save(supplier);
+        return supplierRepository
+                .save(supplier);
     }
 
     @Transactional(readOnly = false)
     public Boolean deleteById(Integer id) {
-        Supplier supplier = supplierRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Supplier not found with id: " + id));
-        supplierRepository.delete(supplier);
+        Supplier supplier = supplierRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "Supplier not found with id: "
+                                        + id
+                        )
+                );
+        supplierRepository
+                .delete(supplier);
         return true;
     }
 

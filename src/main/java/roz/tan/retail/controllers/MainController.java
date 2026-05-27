@@ -34,7 +34,19 @@ import roz.tan.retail.models.Employee;
 import roz.tan.retail.models.Position;
 import roz.tan.retail.models.Supplier;
 import roz.tan.retail.models.Customer;
-import roz.tan.retail.utils.dto.*;
+import roz.tan.retail.utils.dto.ProductInput;
+import roz.tan.retail.utils.dto.SaleInput;
+import roz.tan.retail.utils.dto.StockMovementInput;
+import roz.tan.retail.utils.dto.CategoryInput;
+import roz.tan.retail.utils.dto.BrandInput;
+import roz.tan.retail.utils.dto.UnitInput;
+import roz.tan.retail.utils.dto.WarehouseInput;
+import roz.tan.retail.utils.dto.EmployeeInput;
+import roz.tan.retail.utils.dto.PositionInput;
+import roz.tan.retail.utils.dto.SupplierInput;
+import roz.tan.retail.utils.dto.CustomerInput;
+import roz.tan.retail.utils.dto.CityInput;
+import roz.tan.retail.utils.dto.CountryInput;
 
 import java.util.List;
 import java.util.Set;
@@ -194,8 +206,11 @@ public final class MainController {
     }
 
     @QueryMapping("customers_by_active")
-    public Set<Customer> getCustomersByActive(@Argument Boolean active) {
-        return customerService.findAllByActive(active);
+    public Set<Customer> getCustomersByActive(
+            @Argument Boolean active
+    ) {
+        return customerService
+                .findAllByActive(active);
     }
 
     // ==============================
@@ -225,8 +240,11 @@ public final class MainController {
     }
 
     @MutationMapping("deleteSale")
-    public Boolean deleteSale(@Argument Integer id) {
-        return saleService.deleteById(id);
+    public Boolean deleteSale(
+            @Argument Integer id
+    ) {
+        return saleService
+                .deleteById(id);
     }
 
     // ---------- Движение товаров ----------
@@ -269,8 +287,11 @@ public final class MainController {
 
     // ---------- Единицы измерения ----------
     @MutationMapping("createUnit")
-    public Unit createUnit(@Argument UnitInput input) {
-        return unitService.save(input);
+    public Unit createUnit(
+            @Argument UnitInput input
+    ) {
+        return unitService
+                .save(input);
     }
 
     @MutationMapping("updateUnit")
@@ -285,8 +306,11 @@ public final class MainController {
 
     // ---------- Склады ----------
     @MutationMapping("createWarehouse")
-    public Warehouse createWarehouse(@Argument WarehouseInput input) {
-        return warehouseService.save(input);
+    public Warehouse createWarehouse(
+            @Argument WarehouseInput input
+    ) {
+        return warehouseService
+                .save(input);
     }
 
     @MutationMapping("updateWarehouse")
@@ -295,8 +319,11 @@ public final class MainController {
     }
 
     @MutationMapping("deleteWarehouse")
-    public Boolean deleteWarehouse(@Argument Integer id) {
-        return warehouseService.deleteById(id);
+    public Boolean deleteWarehouse(
+            @Argument Integer id
+    ) {
+        return warehouseService
+                .deleteById(id);
     }
 
     // ---------- Сотрудники ----------
@@ -311,8 +338,11 @@ public final class MainController {
     }
 
     @MutationMapping("deleteEmployee")
-    public Boolean deleteEmployee(@Argument Integer id) {
-        return employeeService.deleteById(id);
+    public Boolean deleteEmployee(
+            @Argument Integer id
+    ) {
+        return employeeService
+                .deleteById(id);
     }
 
     // ---------- Должности ----------
@@ -322,8 +352,12 @@ public final class MainController {
     }
 
     @MutationMapping("updatePosition")
-    public Position updatePosition(@Argument Integer id, @Argument PositionInput input) {
-        return positionService.update(id, input);
+    public Position updatePosition(
+            @Argument Integer id,
+            @Argument PositionInput input
+    ) {
+        return positionService
+                .update(id, input);
     }
 
     @MutationMapping("deletePosition")
@@ -349,12 +383,18 @@ public final class MainController {
 
     // ---------- Клиенты ----------
     @MutationMapping("createCustomer")
-    public Customer createCustomer(@Argument CustomerInput input) {
-        return customerService.save(input);
+    public Customer createCustomer(
+            @Argument CustomerInput input
+    ) {
+        return customerService
+                .save(input);
     }
 
     @MutationMapping("updateCustomer")
-    public Customer updateCustomer(@Argument Integer id, @Argument CustomerInput input) {
+    public Customer updateCustomer(
+            @Argument Integer id,
+            @Argument CustomerInput input
+    ) {
         return customerService.update(id, input);
     }
 
